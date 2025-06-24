@@ -2,12 +2,17 @@ const nodemailer= require('nodemailer')
 const fs = require("fs")
 const path = require('path')
 
+require('dotenv').config()
+
 
 const emailTemplate = fs.readFileSync(path.join(__dirname, '../public/index.html'),'utf-8')
 
 
 function transporter(service){
+
     try{
+        console.log('>>>>',process.env.GMAIL_PASS,process.env.GMAIL_USER );
+        
         if(service==="gmail"){
             const transporter =  nodemailer.createTransport({
                  
