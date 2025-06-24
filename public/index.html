@@ -1,57 +1,46 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
   <meta charset="UTF-8">
-  <style>
-    body {
-      font-family: Arial, sans-serif;
-      background-color: #f1f3f4;
-      margin: 0;
-      padding: 0;
-    }
-
-    .container {
-      max-width: 600px;
-      margin: 20px auto;
-      background-color: #fff;
-      border-radius: 8px;
-      overflow: hidden;
-      box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
-    }
-
-    .body {
-      padding: 30px;
-      color: #202124;
-      font-size: 16px;
-      line-height: 1.6;
-    }
-
-    .footer {
-      padding: 20px;
-      font-size: 13px;
-      text-align: center;
-      color: #5f6368;
-      background-color: #f1f3f4;
-    }
-  </style>
+  <title>Welcome Email</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 </head>
-<body>
-  <div class="container">
+<body style="margin:0; padding:0; background-color:#f1f3f4; font-family:Arial, sans-serif;">
 
-    {{image}} <!-- Dynamic image goes here -->
+  <table width="100%" cellpadding="0" cellspacing="0" border="0" style="background-color:#f1f3f4; padding: 20px 0;">
+    <tr>
+      <td align="center">
+        <table width="600" cellpadding="0" cellspacing="0" border="0" style="background-color:#ffffff; border-radius:8px; overflow:hidden; box-shadow:0 2px 8px rgba(0,0,0,0.05); max-width:600px; width:100%;">
+          
+          <!-- Header -->
+          <tr>
+            <td style="background-color:#2b2c2b; padding:20px; text-align:center; color:#ffffff;">
+              <h1 style="margin:0; font-size:24px;">Welcome to Our</h1>
+              <p style="margin:5px 0 0; font-size:14px;">We're glad you're here!</p>
+            </td>
+          </tr>
 
-    <div class="body">
-      <p>Hi <strong>User</strong>,</p>
+          <!-- Body -->
+          <tr>
+            <td style="padding: 149px 30px; font-size:16px; color:#202124; line-height:1.6;">
+              <p style="margin:0;">Hello <strong>{{username}}</strong>,</p>
+              <p style="margin:20px 0;">{{body}}</p>
+              <p style="margin:0;">If you have any questions, feel free to contact our support team.</p>
+            </td>
+          </tr>
 
-      <p>Thanks for joining! We're thrilled to have you on board. This is just a welcome email with no actions required.</p>
+          <!-- Footer -->
+          <tr>
+            <td style="background-color:#222323; padding:20px; text-align:center; font-size:12px; color:#e3e6e9;">
+              &copy; 2025 Your Company • All rights reserved<br />
+              <a href="#" style="color:#a0a0a0; text-decoration:none;">Unsubscribe</a>
+            </td>
+          </tr>
 
-      <p>You can explore our features and enjoy the experience. Feel free to reach out anytime if you need help.</p>
-    </div>
+        </table>
+      </td>
+    </tr>
+  </table>
 
-    <div class="footer">
-      &copy; 2025 Your Company • You’re receiving this because you signed up
-    </div>
-
-  </div>
 </body>
 </html>

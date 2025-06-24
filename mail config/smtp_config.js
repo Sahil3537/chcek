@@ -20,7 +20,7 @@ function transporter(service){
             })
             return{
                 transporter:transporter,
-                temlate:emailTemplate,
+                template:emailTemplate,
                  from: `"Support Team" <${process.env.GMAIL_USER}>`
 
             }

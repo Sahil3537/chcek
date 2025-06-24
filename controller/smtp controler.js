@@ -1,48 +1,38 @@
-const transporter = require('../mail config/smtp_config')
-require('dotenv').config()
-const path = require('path')
+const transporter = require('../mail config/smtp_config');
+require('dotenv').config();
+const fs = require('fs');
+
 exports.sendEmail = async (req, res) => {
-    const { to, subject, body, service } = req.body
+    const { to, subject, service,  } = req.body;
+    const username = req.body.userName || 'Guest';
+const body = req.body.body || 'Hello! This is your welcome message.';
 
-
-    const config = transporter(service)
-    
-    const image = ` <div style="max-width:600px;margin:auto;">
-      <img 
-        src="https://res.cloudinary.com/ddeonryiq/image/upload/v1750752612/pexels-rdne-7563675_lgzbb9.jpg"
-        alt="Banner"
-        style="width:100%;display:block;" />
-      <h2 style="background:#4285f4;color:white;padding:10px;text-align:center;">Welcome!</h2>
-      <p style="padding:20px;">Click below to start:</p>
-    </div>  ` ;
-
-const htmlbody = config.temlate.replace(`{{image}}`, image )
-
-    //validation 
+    const config = transporter(service);
 
     if (!config) {
         return res.status(400).json({ success: false, message: 'Invalid service' });
     }
 
+    // Load template
+    let htmlbody = config.template
+    .replace(/{{username}}/g, username || 'Guest')
+    .replace(/{{body}}/g, body || 'This is a default welcome message.');;
 
+    // Replace dynamic placeholders
+   
     const mailOptions = {
         from: config.from,
         to,
         subject,
         text: body,
         html: htmlbody
-
-
-
-    }
+    };
 
     try {
-        const info = await config.transporter.sendMail(mailOptions)
-        res.json({ message: 'mail sent successfully', statusbar: 200, success: true, data: info })
-
+        const info = await config.transporter.sendMail(mailOptions);
+        res.json({ message: 'Mail sent successfully', statusbar: 200, success: true, data: info });
     } catch (error) {
         console.log('error>>>> ', error.message);
-        res.json({ message: "error while sending mail", success: false, statusbar: 500 })
-
+        res.json({ message: "Error while sending mail", success: false, statusbar: 500 });
     }
-}
+};
