@@ -1,119 +1,57 @@
 <!DOCTYPE html>
-<html lang="en">
+<html>
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>HAIR ARTIST MOHIT</title>
-    <link rel="stylesheet" href="style.css" />
-      <link rel="stylesheet" href="/public/style copy.css" />
-  <link href="https://fonts.googleapis.com/css2?family=Open+Sans&family=Playfair+Display&family=Poppins&display=swap" rel="stylesheet">
+  <meta charset="UTF-8">
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      background-color: #f1f3f4;
+      margin: 0;
+      padding: 0;
+    }
 
-</head>
+    .container {
+      max-width: 600px;
+      margin: 20px auto;
+      background-color: #fff;
+      border-radius: 8px;
+      overflow: hidden;
+      box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+    }
+
+    .body {
+      padding: 30px;
+      color: #202124;
+      font-size: 16px;
+      line-height: 1.6;
+    }
+
+    .footer {
+      padding: 20px;
+      font-size: 13px;
+      text-align: center;
+      color: #5f6368;
+      background-color: #f1f3f4;
+    }
+  </style>
 </head>
 <body>
- <nav class="navbar">
   <div class="container">
-    <h1 class="logo">
-      <h3 class = "name">HAIR STYLE' S BY MOHIT</h3>
-     </h1>
-    <ul class="nav-links">
-      <li><a href="#home">HOME</a></li>
-      <li><a href="#about">ABOUT</a></li>
-      <li><a href="#services">SERVICES</a></li>
-      <li><a href="#gallery">GALLERY</a></li>
-      <li><a href="#contact">CONTACT</a></li>
-    </ul>
-  </div>
-</nav>
 
+    {{image}} <!-- Dynamic image goes here -->
 
-    <section class="hero" id=" home">
-        <div class="content ">
-            <h2>Redefining Style, One Cut at a Time</h2>
-        <p>Professional Hair Styling and Grooming by MOHIT</p>   
-   </div>
- </section>
+    <div class="body">
+      <p>Hi <strong>User</strong>,</p>
 
+      <p>Thanks for joining! We're thrilled to have you on board. This is just a welcome email with no actions required.</p>
 
- <section class="about" id="about">
-  <div class="container">
-    <h2>About MOHIT</h2>
-    <p> Mohit Hair Dresser, known as Hair Artist Mohit, is a skilled and passionate salon professional based in Patiala, Punjab. With years of hands-on experience in modern hair styling, Mohit specializes in delivering high-quality men’s grooming, custom haircuts, beard styling, and fashion-forward looks tailored to each client's personality and face shape.
-    Dedicated to excellence, Mohit focuses on using the best techniques and latest trends to ensure every customer leaves with confidence and style. Whether it's a fresh fade, wedding look, or regular grooming, Mohit offers a premium salon experience with personal attention and creative vision.
-</p>
-  </div>
-</section>
-
-<section class = "opt" id=" opt">
-  <div class="container">
-    <button class="explore"> explore</button>
-    <button class = 'find'> Find Online</button>
-  </div>
-</section>
-
-<section class="services" id="services">
-  <div class="container">
-    <h2 class=" serve">Our Services</h2>
-    <ul class="service-list">
-      <li onclick="toggleDesc('cut')">
-        Haircuts & Styling
-        <p id="cut" class="desc">
-        At Mohit Hair Dresser, we offer precision haircuts and modern styling that reflect your personality and lifestyle. Whether you're looking for a classic gentleman’s cut, a sharp fade, or a trendy textured crop, our expertise ensures you walk out looking sharp and confident. We understand face shapes, hair textures, and the latest fashion, delivering a customized look every time — be it casual, formal, or high fashion. Each style is finished with professional products to maintain hold, texture, and volume all day long.
-
-
-        </p>
-      </li>
-      <li onclick="toggleDesc('beard')">
-        Beard Grooming
-        <p id="beard" class="desc">
-         Your beard is a statement — we help you make it bold, clean, and well-defined. From shaping and trimming to detailed line-ups and fades, we tailor your beard to enhance your facial features and personal vibe. We also offer complete beard care with hot towel treatments, hydrating oils, and advice on maintenance so your beard remains healthy, shiny, and itch-free. Whether you want a full lumberjack beard, a subtle stubble, or a designer trim, we’ve got you covered.
-
-</p>
-      </li>
-      <li onclick="toggleDesc('color')">
-        Hair Coloring
-        <p id="color" class="desc">
-          Break away from the ordinary with expert hair coloring services designed to suit your skin tone, personal style, and lifestyle. From subtle highlights and streaks to bold fashion shades and global coloring, we use high-quality, damage-free products for vibrant and long-lasting results. Whether you're refreshing your current color, covering greys, or going for a complete transformation, Mohit’s coloring service guarantees shine, smoothness, and head-turning impact. </p>
-      </li>
-    </ul>
-  </div>
-</section>
-
-
-<section class="gallery" id="gallery">
-  <div class="container">
-    <h2>Our Work</h2>
-    <div class="gallery-grid">
-     <div class=" first-image"> <img src="/public/images/pexels-delbeautybox-211032-705255.jpg" alt="Style 1"></div> 
-      <!-- <img src="/public//images/greg-trowman-jsuWg7IXx1k-unsplash.jpg" alt="Style 2"> -->
-      ...
+      <p>You can explore our features and enjoy the experience. Feel free to reach out anytime if you need help.</p>
     </div>
+
+    <div class="footer">
+      &copy; 2025 Your Company • You’re receiving this because you signed up
+    </div>
+
   </div>
-</section>
-
-
-
-<section class="contact" id="contact">
-  <div class="container">
-    <h2>Contact</h2>
-    <P> <a href="tel +91 7888852037" class="call-btn"> 📞phno: +91 7888852037  </a></P>
-
-    
-    <p>📸 Instagram  <a href="https://www.instagram.com/hair_artist_mohit_4228/ " class="insta-btn"> :find us on instagram</a></p>
-    <p>📧 Email: hairbyMohit@email.com</p>
-    <p>📍 Location: Ludhiana, Punjab</p>
-    <a href="https://wa.me/+917888852037" class="btn">Chat on WhatsApp</a>
-  </div>
-</section>
-
-
-
-<footer>
-  <div class="container">
-    <p>&copy; 2025 Hair by Mohit. All rights reserved.</p>
-  </div>
-</footer>
-
-<script src="/public/script.js"></script>
 </body>
 </html>
