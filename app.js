@@ -1,15 +1,12 @@
 const express = require('express')
 const app = express()
 const port = 3000
- const routes = require('./routes/mailroutes')
-
-
-
+const routes = require('./routes/mailroutes')
+const cors = require('cors')
 
 app.use(express.json())
-
+app.use(cors())
 app.use('/api', routes)
-
 
 
 app.listen(port,()=>{
