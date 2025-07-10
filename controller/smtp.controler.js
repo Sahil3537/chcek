@@ -22,6 +22,7 @@ exports.sendEmail = async (req, res) => {
     const cacheBuster = Date.now();
     const pixel = `<img src="${BASE_URL}/api/track/${token}?cb=${cacheBuster}" width="1" height="1" style="display:none;visibility:hidden;opacity:0;border:0;" alt="" />`;
 
+
     const defaultHtml = '<h2>Hello 👋</h2><p>This email has a tracking pixel.</p>';
     const finalHtml = `<div>${pixel}${html || defaultHtml}</div>`;
 
