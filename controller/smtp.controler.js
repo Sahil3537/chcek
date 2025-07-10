@@ -14,21 +14,28 @@ exports.sendEmail = async (req, res) => {
     const token = uuidv4();
     await trackerModel.saveTracking(to, token);
 
-    // ✅ Add token visibly in email for testing
-  pixel = '<img src="https://6f70b602526b.ngrok-free.app/api/track/' + token + '" width="10" height="10" style="opacity:0.01;" alt="tracker pixel" />';
+    // ✅ Create tracking pixel with cache-busting parameter
+    const cacheBuster = Date.now(); // Add timestamp to avoid caching
+    const pixel = `<img src="${BASE_URL}/api/track/${token}?cb=${cacheBuster}" width="1" height="1" style="display:none;visibility:hidden;opacity:0;border:0;" alt="" />`;
 
-   console.log('Tracking pixel URL:', `${BASE_URL}/api/track/${token}`);
+    // ✅ Minify HTML and place pixel near the top to avoid Gmail clipping
+    const defaultHtml = '<h2>Hello 👋</h2><p>This email has a tracking pixel.</p>';
+    const finalHtml = `<div>${pixel}${html || defaultHtml}</div>`;
 
+    // ✅ Log the HTML for debugging
+    console.log('Tracking pixel URL:', `${BASE_URL}/api/track/${token}?cb=${cacheBuster}`);
+    console.log('HTML content being sent:\n', finalHtml);
 
-
-    // ✅ Add your content + the pixel for testing
-    const finalHtml = (html || '<h2>Hello 👋</h2><p>This email has a tracking pixel.</p>') + pixel;
-
+    // ✅ Configure Nodemailer with Gmail and proper sender authentication
     const transporter = nodemailer.createTransport({
       service: 'gmail',
       auth: {
         user: process.env.GMAIL_USER,
-        pass: process.env.GMAIL_PASS,
+        pass: process.env.GMAIL_PASS, // Consider using OAuth2 for better security
+      },
+      // Add custom headers for better deliverability
+      headers: {
+        'X-Mailer': 'Custom-Tracker',
       },
     });
 
@@ -37,13 +44,17 @@ exports.sendEmail = async (req, res) => {
       to,
       subject: subject || 'Tracked Email',
       html: finalHtml,
+      // Add authentication headers for deliverability
+      authenticationResults: {
+        spf: 'pass',
+        dkim: 'pass',
+      },
     };
-    console.log('HTML content being sent:\n', finalHtml);
 
-
+    // ✅ Send email
     const info = await transporter.sendMail(mailOptions);
 
-    // ✅ Respond back with token in API too
+    // ✅ Respond with token and email info
     res.json({ success: true, message: 'Email sent', token, info });
   } catch (err) {
     console.error('❌ Email send error:', err.message);

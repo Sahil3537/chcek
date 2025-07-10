@@ -20,23 +20,31 @@ const trackerModel = require('../model/tracker.model');
 //   res.setHeader('Content-Type', 'image/gif');
 //   res.send(pixel);
 // };
+
 const path = require('path');
 
+
 exports.trackOpen = async (req, res) => {
-  const token = req.params.token;
+  const { token } = req.params;
 
   try {
-    await trackerModel.markAsOpened(token);
-    console.log(`✅ Tracking hit for token: ${token}`);
-  } catch (err) {
-    console.error(`❌ Failed to track: ${err.message}`);
-  }
+    // Log request details for debugging
+    console.log(`✅ Tracking hit for token: ${token} at ${new Date()}`);
+    console.log(`User-Agent: ${req.get('User-Agent') || 'Unknown'}`);
+    console.log(`Client IP: ${req.ip || 'Unknown'}`);
 
-  // ✅ Send a real image instead of a transparent pixel
-   const imgPath = path.join(__dirname, '../public/test-image.png');
-  console.log('📷 Image Path:', imgPath);
-  res.set('Content-Type', 'image/png');
-  res.sendFile(imgPath);
+    // Update tracking status in the database
+    await trackerModel.markAsOpened(token);
+
+    // Send a 1x1 transparent GIF
+    res.set('Content-Type', 'image/gif');
+    res.send(Buffer.from('R0lGODlhAQABAIAAAP///wAAACwAAAAAAQABAAACAkQBADs=', 'base64'));
+  } catch (err) {
+    console.error(`❌ Failed to track token ${token}: ${err.message}`);
+    // Send the transparent GIF even if tracking fails to avoid breaking the email client
+    res.set('Content-Type', 'image/gif');
+    res.send(Buffer.from('R0lGODlhAQABAIAAAP///wAAACwAAAAAAQABAAACAkQBADs=', 'base64'));
+  }
 };
 exports.getAllTrackers = async (req, res) => {
   try {
