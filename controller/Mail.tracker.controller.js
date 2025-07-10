@@ -1,6 +1,16 @@
 
+
+
+
+const memoryStore = {
+  trackers: [],
+};
+
+
 exports.trackOpen = async (req, res) => {
   const { token } = req.params;
+
+  
 
   try {
     console.log(`✅ Tracking hit for token: ${token} at ${new Date()}`);
