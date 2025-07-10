@@ -2,7 +2,7 @@ const nodemailer = require('nodemailer');
 const { v4: uuidv4 } = require('uuid');
 require('dotenv').config();
 
-const BASE_URL = `https://chcek-xwqu.onrender.com  `  ;
+const BASE_URL = `https://chcek-xwqu.onrender.com`  ;
 
 // In-memory store to replace DB
 const memoryStore = {
