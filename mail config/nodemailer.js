@@ -1,39 +1,22 @@
-
-
-
+// mail config/nodemailer.js
 const nodemailer = require('nodemailer');
 require('dotenv').config();
 
 exports.transporter = async (service) => {
+  const email = process.env.GMAIL_USER;
+  const pass  = process.env.GMAIL_PASS;
 
+  if (service !== 'gmail') {
+    throw new Error('Unsupported mail service');
+  }
 
-    const email = process.env.GMAIL_USER;
-    const pass = process.env.GMAIL_PASS;
+  const transport = nodemailer.createTransport({
+    service: 'gmail',
+    auth: { user: email, pass: pass }
+  });
 
-    try {
-        let transport;
-
-        if (service === "gmail") {
-            transport = await nodemailer.createTransport({
-                service: 'gmail',
-                auth: {
-                    user: email,
-                    pass: pass
-                }
-
-            })
-        }
-        else {
-            throw new Error('unsupported email service')
-        }
-
-        return {
-            transport,
-            from: `"Support Team" <${process.env.GMAIL_USER}>`
-        }
-
-    }
-    catch (error) {
-        throw error
-    }
-}
+  return {
+    transport,
+    from: `"Support Team" <${email}>`
+  };
+};

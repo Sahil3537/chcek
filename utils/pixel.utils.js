@@ -1,38 +1,13 @@
-
-
+// utils/pixel.utils.js
 const { v4: uuidv4 } = require('uuid');
 const trackingModel = require('../model/tracker.model');
-const emailTemplate = require('../views/views');
-require('dotenv').config()
+require('dotenv').config();
 
+exports.generateToken = async (email) => {
+  const token = uuidv4();
+  // Save to DB: implement saveTracking(email, token) to INSERT
+  await trackingModel.saveTracking(email, token);
 
-const base_url = process.env.BASE_URL
-
-//crate function aadd email as argumet
-
-exports.generateToken= async (email)=>{
-try{
-    //create token 
-    const token = uuidv4()
-
-
-    //save the token created by uuid in db 
-    const saveToken = await trackingModel.saveTracking(email, token)
-
-    //imprt html token here which has template
-    const htmlToken = emailTemplate(token)
-  
-      return htmlToken
-
-
-}
-catch(Err){
-    throw Err
-}
-}
-
-
-
-//save the token to db 
-
-//return the pixel 
+  const base = process.env.BASE_URL; // e.g. "https://xyz.ngrok-free.app"
+  return `<img src="${base}/api/track/${token}" width="1" height="1" style="display:none;" />`;
+};

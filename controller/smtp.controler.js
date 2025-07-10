@@ -1,48 +1,52 @@
-const {transporter:nodemailer} = require('../mail config/nodemailer')
-const pixels = require('../utils/pixel.utils')
+const nodemailer = require('nodemailer');
+const { v4: uuidv4 } = require('uuid');
+const trackerModel = require('../model/tracker.model');
 require('dotenv').config();
 
+const BASE_URL = process.env.BASE_URL || 'http://localhost:3000';
 
 exports.sendEmail = async (req, res) => {
-    try {
-        const { to, subject, body, html, service } = req.body;
+  try {
+    const { to, subject, html } = req.body;
+    if (!to) return res.status(400).json({ success: false, message: "Missing 'to' field" });
 
-        const config = await nodemailer(service);
-        if (!config) {
-            return res.status(400).json({ success: false, message: "Invalid mail service" });
-        }
+    // ✅ Generate token and save in DB
+    const token = uuidv4();
+    await trackerModel.saveTracking(to, token);
 
+    // ✅ Add token visibly in email for testing
+  pixel = '<img src="https://6f70b602526b.ngrok-free.app/api/track/' + token + '" width="10" height="10" style="opacity:0.01;" alt="tracker pixel" />';
 
-        // Generate tracking pixel + inject
-        const trackPixel = await pixels.generateToken(to)
-        let  finalHtml = html
-        if (finalHtml) {
-            finalHtml+=trackPixel;
-        }
-   
+   console.log('Tracking pixel URL:', `${BASE_URL}/api/track/${token}`);
 
 
-        const mailOptions = {
-            from: config.from,
-            to,
-            subject,
-            text: body || 'This is a default message.',
-            ...(finalHtml && { html: finalHtml })
-        };
 
-        // Only add HTML if provided
+    // ✅ Add your content + the pixel for testing
+    const finalHtml = (html || '<h2>Hello 👋</h2><p>This email has a tracking pixel.</p>') + pixel;
+
+    const transporter = nodemailer.createTransport({
+      service: 'gmail',
+      auth: {
+        user: process.env.GMAIL_USER,
+        pass: process.env.GMAIL_PASS,
+      },
+    });
+
+    const mailOptions = {
+      from: `"Tracker" <${process.env.GMAIL_USER}>`,
+      to,
+      subject: subject || 'Tracked Email',
+      html: finalHtml,
+    };
+    console.log('HTML content being sent:\n', finalHtml);
 
 
-            const info = await config.transport.sendMail(mailOptions);
+    const info = await transporter.sendMail(mailOptions);
 
-        res.json({
-            message: 'Mail sent successfully',
-            success: true,
-            data: info
-        });
-
-    } catch (error) {
-        console.error('Send mail error:', error.message);
-        res.status(500).json({ message: 'Failed to send email', success: false });
-    }
+    // ✅ Respond back with token in API too
+    res.json({ success: true, message: 'Email sent', token, info });
+  } catch (err) {
+    console.error('❌ Email send error:', err.message);
+    res.status(500).json({ success: false, error: 'Failed to send email' });
+  }
 };

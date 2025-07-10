@@ -1,52 +1,48 @@
-const nodemailer = require('nodemailer');
-const { v4: uuidv4 } = require('uuid');
-const trackingModel = require('../model/tracker.model');
-const generateEmail = require('../views/views');
+// controller/Mail.tracker.controller.js
+const trackerModel = require('../model/tracker.model');
 
-// Already defined: sendEmail function...
+// exports.trackOpen = async (req, res) => {
+//   const { token } = req.params;
+//   console.log('🎯 Pixel hit for token:', token);
+
+//   try {
+//     // Implement markAsOpened(token) to UPDATE opened = true, opened_at = NOW()
+//     await trackingModel.markAsOpened(token);
+//   } catch (err) {
+//     console.error('Error marking opened:', err);
+//   }
+
+//   // Return a transparent 1×1 GIF
+//   const pixel = Buffer.from(
+//     'R0lGODlhAQABAIAAAAAAAP///ywAAAAAAQABAAACAUwAOw==',
+//     'base64'
+//   );
+//   res.setHeader('Content-Type', 'image/gif');
+//   res.send(pixel);
+// };
+const path = require('path');
 
 exports.trackOpen = async (req, res) => {
   const token = req.params.token;
 
   try {
-     const row = await trackingModel.getByToken(token);
-
-  if (!row) {
-    return res.status(404).send('❌ Invalid token');
+    await trackerModel.markAsOpened(token);
+    console.log(`✅ Tracking hit for token: ${token}`);
+  } catch (err) {
+    console.error(`❌ Failed to track: ${err.message}`);
   }
 
-  // ✅ Update opened status
-  if (!row.opened) {
-    await trackingModel.markAsOpened(token);
-  }
-   
-    // Transparent 1x1 GIF (base64 encoded)
-    const pixel = Buffer.from(
-      'R0lGODlhAQABAAAAACH5BAEKAAEALAAAAAABAAEAAAICTAEAOw==',
-      'base64'
-    );
-
-    res.setHeader('Content-Type', 'image/gif');
-    res.setHeader('Content-Length', pixel.length);
-    res.end(pixel, 'binary');
-  } catch (error) {
-    console.error('❌ Error tracking open:', error);
-    res.status(500).send('Tracking failed');
-  }
+  // ✅ Send a real image instead of a transparent pixel
+   const imgPath = path.join(__dirname, '../public/test-image.png');
+  console.log('📷 Image Path:', imgPath);
+  res.set('Content-Type', 'image/png');
+  res.sendFile(imgPath);
 };
-
-
-
-// controller/email.controller.js or tracker.controller.js
-
-
-
 exports.getAllTrackers = async (req, res) => {
   try {
-    const data = await trackingModel.getAll(); // SELECT * FROM tracker
-    console.log(data)
-    res.status(200).json({ success: true, data });
+    const data = await trackerModel.getAll();
+    res.json({ success: true, data });
   } catch (err) {
-    res.status(500).json({ success: false, message: 'Failed to fetch tracking data' });
+    res.status(500).json({ success: false, message: 'Failed to fetch data' });
   }
 };
